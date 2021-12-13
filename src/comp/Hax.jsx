@@ -10,10 +10,25 @@ const Hax = () => {
   let Render = Matter.Render;
   let World = Matter.World;
   let Bodies = Matter.Bodies;
+  let Body = Matter.Body;
   let engine = Engine.create({});
 
-  const width = 1200;
-  const height = 800;
+  const width = 800;
+  const height = 500;
+
+  const playerA = Bodies.circle(200, height / 2, 20, {
+    restitution: 0,
+    render: {
+      fillStyle: "blue",
+    },
+  });
+
+  const playerB = Bodies.circle(width - 200, height / 2, 20, {
+    restitution: 0,
+    render: {
+      fillStyle: "red",
+    },
+  });
 
   useEffect(() => {
     let render = Render.create({
@@ -23,65 +38,32 @@ const Hax = () => {
       options: {
         width: width,
         height: height,
-        background: "rgba(255, 0, 0, 0.5)",
+        background: "lightGreen",
         wireframes: false,
       },
     });
 
-    engine.gravity.y = 0;
-
     const floor = Bodies.rectangle(width / 2, height + 10, width, 20, {
+      restitution: 0,
       isStatic: true,
-      render: {
-        fillStyle: "blue",
-      },
     });
 
     const ceiling = Bodies.rectangle(width / 2, -10, width, 20, {
+      restitution: 0,
       isStatic: true,
-      render: {
-        fillStyle: "blue",
-      },
     });
 
     const wallLeft = Bodies.rectangle(-10, height / 2, 20, height, {
+      restitution: 0,
       isStatic: true,
-      render: {
-        fillStyle: "blue",
-      },
     });
 
     const wallRight = Bodies.rectangle(width + 10, height / 2, 20, height, {
+      restitution: 0,
       isStatic: true,
-      render: {
-        fillStyle: "blue",
-      },
     });
 
-    let mouse = Matter.Mouse.create(render.canvas);
-    let mouseConstraint = Matter.MouseConstraint.create(engine, {
-      mouse: mouse,
-      constraint: {
-        render: { visible: false },
-      },
-    });
-    render.mouse = mouse;
-
-    const playerA = Bodies.circle(200, height / 2, 20, {
-      restitution: 0,
-      render: {
-        fillStyle: "yellow",
-      },
-    });
-
-    const playerB = Bodies.circle(width - 200, height / 2, 20, {
-      restitution: 0,
-      render: {
-        fillStyle: "green",
-      },
-    });
-
-    const ball = Bodies.circle(width/2, height / 2, 10, {
+    const ball = Bodies.circle(width / 2, height / 2, 15, {
       restitution: 0.5,
       render: {
         fillStyle: "white",
@@ -96,22 +78,113 @@ const Hax = () => {
       playerA,
       playerB,
       ball,
-      mouseConstraint,
     ]);
+
+    engine.gravity.y = 0;
 
     Runner.run(engine);
     Render.run(render);
   });
 
-  //   document.body.addEventListener("click", function (e) {
-  //     const ball = Bodies.circle(e.screenX - 8, e.screenY - 80, 20, {
-  //       restitution: 1,
-  //       render: {
-  //         fillStyle: "yellow",
-  //       },
-  //     });
-  //     World.add(engine.world, ball);
-  //   });
+  // players movement
+
+  const moveForce = 0.0003;
+  const keyHandlers = {
+    KeyD: () => {
+      Body.applyForce(
+        playerA,
+        {
+          x: playerA.position.x,
+          y: playerA.position.y,
+        },
+        { x: moveForce, y: 0 }
+      );
+    },
+    KeyA: () => {
+      Body.applyForce(
+        playerA,
+        {
+          x: playerA.position.x,
+          y: playerA.position.y,
+        },
+        { x: -moveForce, y: 0 }
+      );
+    },
+    KeyW: () => {
+      Body.applyForce(
+        playerA,
+        {
+          x: playerA.position.x,
+          y: playerA.position.y,
+        },
+        { x: 0, y: -moveForce }
+      );
+    },
+    KeyS: () => {
+      Body.applyForce(
+        playerA,
+        {
+          x: playerA.position.x,
+          y: playerA.position.y,
+        },
+        { x: 0, y: moveForce }
+      );
+    },
+    KeyL: () => {
+      Body.applyForce(
+        playerB,
+        {
+          x: playerB.position.x,
+          y: playerB.position.y,
+        },
+        { x: moveForce, y: 0 }
+      );
+    },
+    KeyJ: () => {
+      Body.applyForce(
+        playerB,
+        {
+          x: playerB.position.x,
+          y: playerB.position.y,
+        },
+        { x: -moveForce, y: 0 }
+      );
+    },
+    KeyI: () => {
+      Body.applyForce(
+        playerB,
+        {
+          x: playerB.position.x,
+          y: playerB.position.y,
+        },
+        { x: 0, y: -moveForce }
+      );
+    },
+    KeyK: () => {
+      Body.applyForce(
+        playerB,
+        {
+          x: playerB.position.x,
+          y: playerB.position.y,
+        },
+        { x: 0, y: moveForce }
+      );
+    },
+  };
+
+  const keysDown = new Set();
+  document.addEventListener("keydown", (event) => {
+    keysDown.add(event.code);
+  });
+  document.addEventListener("keyup", (event) => {
+    keysDown.delete(event.code);
+  });
+
+  Matter.Events.on(engine, "beforeUpdate", (event) => {
+    [...keysDown].forEach((key) => {
+      keyHandlers[key]?.();
+    });
+  });
 
   return (
     <>
