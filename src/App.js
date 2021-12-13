@@ -1,9 +1,9 @@
-import Test from "./comp/Test";
+import Test from "./comp/Hax";
 
 function App() {
   return (
     <div>
-      <Test />
+      <Hax />
     </div>
   );
 }
