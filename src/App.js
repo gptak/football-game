@@ -1,4 +1,4 @@
-import Test from "./comp/Hax";
+import Hax from "./comp/Hax";
 
 function App() {
   return (
