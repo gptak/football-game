@@ -37,7 +37,7 @@ const Test = () => {
       },
     });
 
-    const ceiling = Bodies.rectangle(width / 2, -20, width, 20, {
+    const ceiling = Bodies.rectangle(width / 2, -10, width, 20, {
       isStatic: true,
       render: {
         fillStyle: "blue",
@@ -67,29 +67,51 @@ const Test = () => {
     });
     render.mouse = mouse;
 
-    const ball = Bodies.circle(500, 500, 50, {
-              restitution: 1,
-              render: {
-                fillStyle: "yellow",
-              },
-            });
-            World.add(engine.world, ball);
+    const playerA = Bodies.circle(200, height / 2, 20, {
+      restitution: 0,
+      render: {
+        fillStyle: "yellow",
+      },
+    });
 
-    World.add(engine.world, [floor, ceiling, wallLeft, wallRight, mouseConstraint]);
-    
+    const playerB = Bodies.circle(width - 200, height / 2, 20, {
+      restitution: 0,
+      render: {
+        fillStyle: "green",
+      },
+    });
+
+    const ball = Bodies.circle(width/2, height / 2, 10, {
+      restitution: 0.5,
+      render: {
+        fillStyle: "white",
+      },
+    });
+
+    World.add(engine.world, [
+      floor,
+      ceiling,
+      wallLeft,
+      wallRight,
+      playerA,
+      playerB,
+      ball,
+      mouseConstraint,
+    ]);
+
     Runner.run(engine);
     Render.run(render);
   });
 
-//   document.body.addEventListener("click", function (e) {
-//     const ball = Bodies.circle(e.screenX - 8, e.screenY - 80, 20, {
-//       restitution: 1,
-//       render: {
-//         fillStyle: "yellow",
-//       },
-//     });
-//     World.add(engine.world, ball);
-//   });
+  //   document.body.addEventListener("click", function (e) {
+  //     const ball = Bodies.circle(e.screenX - 8, e.screenY - 80, 20, {
+  //       restitution: 1,
+  //       render: {
+  //         fillStyle: "yellow",
+  //       },
+  //     });
+  //     World.add(engine.world, ball);
+  //   });
 
   return (
     <>
