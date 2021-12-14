@@ -17,9 +17,12 @@ const Hax = () => {
   let Bodies = Matter.Bodies;
   let Body = Matter.Body;
   let engine = Engine.create({});
+  engine.gravity.y = 0;
 
   const width = 1500;
   const height = 800;
+  const goalHeight = height / 4;
+  const postDiameter = 10;
 
   const playerA = Bodies.circle(200, height / 2, 20, {
     restitution: 0,
@@ -42,25 +45,138 @@ const Hax = () => {
     },
   });
 
-  const playerAGoal = Bodies.rectangle(20, height / 2, 40, 200, {
+  const playerAGoal = Bodies.rectangle(10, height / 2, 20, goalHeight, {
     isSensor: true,
     isStatic: true,
     render: {
-      strokeStyle: "#f55a3c",
       fillStyle: "transparent",
-      lineWidth: 1,
     },
   });
 
-  const playerBGoal = Bodies.rectangle(width - 20, height / 2, 40, 200, {
+  const playerBGoal = Bodies.rectangle(width - 10, height / 2, 20, goalHeight, {
     isSensor: true,
     isStatic: true,
     render: {
-      strokeStyle: "#f55a3c",
       fillStyle: "transparent",
-      lineWidth: 1,
     },
   });
+
+  const post1 = Bodies.circle(40, (height - goalHeight) / 2, postDiameter, {
+    isStatic: true,
+    render: {
+      fillStyle: "black",
+    },
+  });
+
+  const post2 = Bodies.circle(40, (height + goalHeight) / 2, postDiameter, {
+    isStatic: true,
+    render: {
+      fillStyle: "black",
+    },
+  });
+
+  const post3 = Bodies.circle(
+    width - 40,
+    (height - goalHeight) / 2,
+    postDiameter,
+    {
+      isStatic: true,
+      render: {
+        fillStyle: "black",
+      },
+    }
+  );
+
+  const post4 = Bodies.circle(
+    width - 40,
+    (height + goalHeight) / 2,
+    postDiameter,
+    {
+      isStatic: true,
+      render: {
+        fillStyle: "black",
+      },
+    }
+  );
+
+  const wallUp = Bodies.rectangle(width / 2, height + 50, width, 100, {
+    restitution: 0,
+    isStatic: true,
+  });
+
+  const wallDown = Bodies.rectangle(width / 2, -50, width, 100, {
+    restitution: 0,
+    isStatic: true,
+  });
+
+  const wallLeft = Bodies.rectangle(-50, height / 2, 100, height + 200, {
+    restitution: 0,
+    isStatic: true,
+  });
+
+  const wallRight = Bodies.rectangle(
+    width + 50,
+    height / 2,
+    100,
+    height + 200,
+    {
+      restitution: 0,
+      isStatic: true,
+    }
+  );
+
+  const band1 = Bodies.rectangle(
+    0,
+    (height - goalHeight) / 4,
+    80,
+    (height - goalHeight) / 2,
+    {
+      restitution: 0,
+      isStatic: true,
+      render: {
+        fillStyle: "green",
+      },
+    }
+  );
+  const band2 = Bodies.rectangle(
+    0,
+    (3 * height + goalHeight) / 4,
+    80,
+    (height - goalHeight) / 2,
+    {
+      restitution: 0,
+      isStatic: true,
+      render: {
+        fillStyle: "green",
+      },
+    }
+  );
+  const band3 = Bodies.rectangle(
+    width,
+    (height - goalHeight) / 4,
+    80,
+    (height - goalHeight) / 2,
+    {
+      restitution: 0,
+      isStatic: true,
+      render: {
+        fillStyle: "green",
+      },
+    }
+  );
+  const band4 = Bodies.rectangle(
+    width,
+    (3 * height + goalHeight) / 4,
+    80,
+    (height - goalHeight) / 2,
+    {
+      restitution: 0,
+      isStatic: true,
+      render: {
+        fillStyle: "green",
+      },
+    }
+  );
 
   useEffect(() => {
     let render = Render.create({
@@ -75,45 +191,25 @@ const Hax = () => {
       },
     });
 
-    const floor = Bodies.rectangle(width / 2, height + 50, width, 100, {
-      restitution: 0,
-      isStatic: true,
-    });
-
-    const ceiling = Bodies.rectangle(width / 2, -50, width, 100, {
-      restitution: 0,
-      isStatic: true,
-    });
-
-    const wallLeft = Bodies.rectangle(-50, height / 2, 100, height + 200, {
-      restitution: 0,
-      isStatic: true,
-    });
-
-    const wallRight = Bodies.rectangle(
-      width + 50,
-      height / 2,
-      100,
-      height + 200,
-      {
-        restitution: 0,
-        isStatic: true,
-      }
-    );
-
     World.add(engine.world, [
-      floor,
-      ceiling,
+      wallUp,
+      wallDown,
       wallLeft,
       wallRight,
+      playerAGoal,
+      playerBGoal,
+      band1,
+      band2,
+      band3,
+      band4,
+      post1,
+      post2,
+      post3,
+      post4,
       playerA,
       playerB,
       ball,
-      playerAGoal,
-      playerBGoal,
     ]);
-
-    engine.gravity.y = 0;
 
     Runner.run(engine);
     Render.run(render);
@@ -261,8 +357,6 @@ const Hax = () => {
 
   // goal handling
 
-  const colorA = "#000";
-
   Events.on(engine, "collisionStart", function (event) {
     var pairs = event.pairs;
 
@@ -270,12 +364,12 @@ const Hax = () => {
       var pair = pairs[i];
 
       if (pair.bodyA === ball && pair.bodyB === playerAGoal) {
-        pair.bodyB.render.strokeStyle = colorA;
+        pair.bodyB.render.fillStyle = "#fff";
         setTimeout(() => {
           setGoalACounter(goalACounter + 1);
         }, 3000);
       } else if (pair.bodyA === ball && pair.bodyB === playerBGoal) {
-        pair.bodyB.render.strokeStyle = colorA;
+        pair.bodyB.render.fillStyle = "#fff";
         setTimeout(() => {
           setGoalBCounter(goalBCounter + 1);
         }, 3000);
