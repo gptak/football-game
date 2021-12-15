@@ -1,4 +1,5 @@
 import Hax from "./comp/Hax";
+import SkiJump from "./comp/SkiJump"
 
 function App() {
   return (

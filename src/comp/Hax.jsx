@@ -5,6 +5,7 @@ import "./Hax.css";
 const Hax = () => {
   const [goalACounter, setGoalACounter] = useState(0);
   const [goalBCounter, setGoalBCounter] = useState(0);
+  const [AWon, setAWon] = useState(false);
 
   const boxRef = useRef(null);
   const canvasRef = useRef(null);
@@ -22,28 +23,43 @@ const Hax = () => {
   const width = 1500;
   const height = 800;
   const goalHeight = height / 4;
-  const postDiameter = 10;
+  const ballDiameter = 13;
+  const playerDiameter = 22;
+  let startPosA = 200;
+  let startPosB = width - 200;
 
-  const playerA = Bodies.circle(200, height / 2, 20, {
+  AWon ? (startPosA = 200) : (startPosA = width / 2 - 100);
+  AWon ? (startPosB = width / 2 + 100) : (startPosB = width - 200);
+
+  const playerA = Bodies.circle(startPosA, height / 2, playerDiameter, {
     restitution: 0,
     render: {
       fillStyle: "blue",
+      strokeStyle: "black",
+      lineWidth: 1,
     },
   });
+  Body.setMass(playerA, 2.5);
 
-  const playerB = Bodies.circle(width - 200, height / 2, 20, {
+  const playerB = Bodies.circle(startPosB, height / 2, playerDiameter, {
     restitution: 0,
     render: {
       fillStyle: "red",
+      strokeStyle: "black",
+      lineWidth: 1,
     },
   });
+  Body.setMass(playerB, 2.5);
 
-  const ball = Bodies.circle(width / 2, height / 2, 15, {
+  const ball = Bodies.circle(width / 2, height / 2, ballDiameter, {
     restitution: 0.5,
     render: {
       fillStyle: "white",
+      strokeStyle: "black",
+      lineWidth: 1,
     },
   });
+  Body.setMass(ball, 1);
 
   const playerAGoal = Bodies.rectangle(10, height / 2, 20, goalHeight, {
     isSensor: true,
@@ -60,44 +76,6 @@ const Hax = () => {
       fillStyle: "transparent",
     },
   });
-
-  const post1 = Bodies.circle(40, (height - goalHeight) / 2, postDiameter, {
-    isStatic: true,
-    render: {
-      fillStyle: "black",
-    },
-  });
-
-  const post2 = Bodies.circle(40, (height + goalHeight) / 2, postDiameter, {
-    isStatic: true,
-    render: {
-      fillStyle: "black",
-    },
-  });
-
-  const post3 = Bodies.circle(
-    width - 40,
-    (height - goalHeight) / 2,
-    postDiameter,
-    {
-      isStatic: true,
-      render: {
-        fillStyle: "black",
-      },
-    }
-  );
-
-  const post4 = Bodies.circle(
-    width - 40,
-    (height + goalHeight) / 2,
-    postDiameter,
-    {
-      isStatic: true,
-      render: {
-        fillStyle: "black",
-      },
-    }
-  );
 
   const wallUp = Bodies.rectangle(width / 2, height + 50, width, 100, {
     restitution: 0,
@@ -135,6 +113,8 @@ const Hax = () => {
       isStatic: true,
       render: {
         fillStyle: "green",
+        strokeStyle: "black",
+        lineWidth: 1,
       },
     }
   );
@@ -148,6 +128,8 @@ const Hax = () => {
       isStatic: true,
       render: {
         fillStyle: "green",
+        strokeStyle: "black",
+        lineWidth: 1,
       },
     }
   );
@@ -161,6 +143,8 @@ const Hax = () => {
       isStatic: true,
       render: {
         fillStyle: "green",
+        strokeStyle: "black",
+        lineWidth: 1,
       },
     }
   );
@@ -174,6 +158,8 @@ const Hax = () => {
       isStatic: true,
       render: {
         fillStyle: "green",
+        strokeStyle: "black",
+        lineWidth: 1,
       },
     }
   );
@@ -202,10 +188,6 @@ const Hax = () => {
       band2,
       band3,
       band4,
-      post1,
-      post2,
-      post3,
-      post4,
       playerA,
       playerB,
       ball,
@@ -217,8 +199,8 @@ const Hax = () => {
 
   // players movement and shooting
 
-  const moveForce = 0.0003;
-  const shootForce = 0.001;
+  const moveForce = 0.0004;
+  const shootForce = 0.0005;
 
   const keyHandlers = {
     KeyD: () => {
@@ -321,8 +303,10 @@ const Hax = () => {
     },
     KeyP: () => {
       if (
-        Math.abs(playerB.position.x - ball.position.x) < 45 &&
-        Math.abs(playerB.position.y - ball.position.y) < 45
+        Math.abs(playerB.position.x - ball.position.x) <
+          ballDiameter + playerDiameter + 10 &&
+        Math.abs(playerB.position.y - ball.position.y) <
+          ballDiameter + playerDiameter + 10
       ) {
         Body.applyForce(
           ball,
@@ -365,13 +349,16 @@ const Hax = () => {
 
       if (pair.bodyA === ball && pair.bodyB === playerAGoal) {
         pair.bodyB.render.fillStyle = "#fff";
+
         setTimeout(() => {
           setGoalACounter(goalACounter + 1);
+          setAWon(false);
         }, 3000);
       } else if (pair.bodyA === ball && pair.bodyB === playerBGoal) {
         pair.bodyB.render.fillStyle = "#fff";
         setTimeout(() => {
           setGoalBCounter(goalBCounter + 1);
+          setAWon(true);
         }, 3000);
       }
     }
@@ -380,7 +367,14 @@ const Hax = () => {
   return (
     <>
       <div ref={boxRef} className="box">
-        <canvas ref={canvasRef} />
+        <div className="scoreBoard">
+          <span>{goalBCounter}</span>
+          <span> : </span>
+          <span>{goalACounter}</span>
+        </div>
+        <div>
+          <canvas ref={canvasRef} />
+        </div>
       </div>
     </>
   );
