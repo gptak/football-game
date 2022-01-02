@@ -3,24 +3,24 @@ import Matter from "matter-js";
 import "./Hax.css";
 
 const Hax = () => {
-  const [goalACounter, setGoalACounter] = useState(0);
-  const [goalBCounter, setGoalBCounter] = useState(0);
-  const [AWon, setAWon] = useState(false);
+  const [aGoalCounter, setAGoalCounter] = useState(0);
+  const [bGoalCounter, setBGoalCounter] = useState(0);
+  const [aWon, setAWon] = useState(false);
 
   const boxRef = useRef(null);
   const canvasRef = useRef(null);
 
-  let Engine = Matter.Engine;
-  let Runner = Matter.Runner;
-  let Render = Matter.Render;
-  let Events = Matter.Events;
-  let World = Matter.World;
-  let Bodies = Matter.Bodies;
-  let Body = Matter.Body;
-  let engine = Engine.create({});
+  const Engine = Matter.Engine;
+  const Runner = Matter.Runner;
+  const Render = Matter.Render;
+  const Events = Matter.Events;
+  const World = Matter.World;
+  const Bodies = Matter.Bodies;
+  const Body = Matter.Body;
+  const engine = Engine.create({});
   engine.gravity.y = 0;
 
-  const width = 1500;
+  const width = 1400;
   const height = 800;
   const goalHeight = height / 4;
   const ballDiameter = 13;
@@ -28,8 +28,8 @@ const Hax = () => {
   let startPosA = 200;
   let startPosB = width - 200;
 
-  AWon ? (startPosA = 200) : (startPosA = width / 2 - 100);
-  AWon ? (startPosB = width / 2 + 100) : (startPosB = width - 200);
+  aWon ? (startPosA = 200) : (startPosA = width / 2 - 100);
+  aWon ? (startPosB = width / 2 + 100) : (startPosB = width - 200);
 
   const playerA = Bodies.circle(startPosA, height / 2, playerDiameter, {
     restitution: 0,
@@ -90,6 +90,7 @@ const Hax = () => {
   const wallLeft = Bodies.rectangle(-50, height / 2, 100, height + 200, {
     restitution: 0,
     isStatic: true,
+    friction: 1,
   });
 
   const wallRight = Bodies.rectangle(
@@ -100,6 +101,7 @@ const Hax = () => {
     {
       restitution: 0,
       isStatic: true,
+      friction: 1,
     }
   );
 
@@ -133,6 +135,39 @@ const Hax = () => {
       },
     }
   );
+
+  const goalSignA = Bodies.rectangle(
+    20,
+    (height - goalHeight) / 2 - 20,
+    20,
+    20,
+    {
+      restitution: 0,
+      isStatic: true,
+      render: {
+        fillStyle: "transparent",
+        strokeStyle: "black",
+        lineWidth: 1,
+      },
+    }
+  );
+
+  const goalSignB = Bodies.rectangle(
+    width - 20,
+    (height - goalHeight) / 2 - 20,
+    20,
+    20,
+    {
+      restitution: 0,
+      isStatic: true,
+      render: {
+        fillStyle: "transparent",
+        strokeStyle: "black",
+        lineWidth: 1,
+      },
+    }
+  );
+
   const band3 = Bodies.rectangle(
     width,
     (height - goalHeight) / 4,
@@ -165,7 +200,7 @@ const Hax = () => {
   );
 
   useEffect(() => {
-    let render = Render.create({
+    const render = Render.create({
       element: boxRef.current,
       engine: engine,
       canvas: canvasRef.current,
@@ -191,6 +226,8 @@ const Hax = () => {
       playerA,
       playerB,
       ball,
+      goalSignA,
+      goalSignB,
     ]);
 
     Runner.run(engine);
@@ -199,7 +236,7 @@ const Hax = () => {
 
   // players movement and shooting
 
-  const moveForce = 0.0004;
+  const moveForce = 0.0005;
   const shootForce = 0.0005;
 
   const keyHandlers = {
@@ -283,7 +320,7 @@ const Hax = () => {
         { x: 0, y: moveForce }
       );
     },
-    Backquote: () => {
+    KeyQ: () => {
       if (
         Math.abs(playerA.position.x - ball.position.x) < 45 &&
         Math.abs(playerA.position.y - ball.position.y) < 45
@@ -339,7 +376,7 @@ const Hax = () => {
     });
   });
 
-  // goal handling
+  // goals handler
 
   Events.on(engine, "collisionStart", function (event) {
     var pairs = event.pairs;
@@ -348,18 +385,18 @@ const Hax = () => {
       var pair = pairs[i];
 
       if (pair.bodyA === ball && pair.bodyB === playerAGoal) {
-        pair.bodyB.render.fillStyle = "#fff";
+        goalSignA.render.fillStyle = "yellow";
 
         setTimeout(() => {
-          setGoalACounter(goalACounter + 1);
+          setAGoalCounter(aGoalCounter + 1);
           setAWon(false);
-        }, 3000);
+        }, 2000);
       } else if (pair.bodyA === ball && pair.bodyB === playerBGoal) {
-        pair.bodyB.render.fillStyle = "#fff";
+        goalSignB.render.fillStyle = "yellow";
         setTimeout(() => {
-          setGoalBCounter(goalBCounter + 1);
+          setBGoalCounter(bGoalCounter + 1);
           setAWon(true);
-        }, 3000);
+        }, 2000);
       }
     }
   });
@@ -368,9 +405,9 @@ const Hax = () => {
     <>
       <div ref={boxRef} className="box">
         <div className="scoreBoard">
-          <span>{goalBCounter}</span>
+          <span>{bGoalCounter}</span>
           <span> : </span>
-          <span>{goalACounter}</span>
+          <span>{aGoalCounter}</span>
         </div>
         <div>
           <canvas ref={canvasRef} />

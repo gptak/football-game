@@ -1,5 +1,5 @@
 import Hax from "./comp/Hax";
-import SkiJump from "./comp/SkiJump"
+import Test from "./comp/Test"
 
 function App() {
   return (

@@ -1,7 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
+import "./Hax.css";
 
-const Test = () => {
+const Hax = () => {
+
   const boxRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -11,9 +13,40 @@ const Test = () => {
   let World = Matter.World;
   let Bodies = Matter.Bodies;
   let engine = Engine.create({});
+  engine.gravity.y = 0;
 
   const width = 1200;
   const height = 800;
+
+  const wallUp = Bodies.rectangle(width / 2, height + 50, width, 100, {
+    restitution: 0,
+    isStatic: true,
+  });
+
+  const wallDown = Bodies.rectangle(width / 2, -50, width, 100, {
+    restitution: 0,
+    isStatic: true,
+  });
+
+  const wallLeft = Bodies.rectangle(-50, height / 2, 100, height + 200, {
+    restitution: 0,
+    isStatic: true,
+    friction: 1,
+  });
+
+  const wallRight = Bodies.rectangle(
+    width + 50,
+    height / 2,
+    100,
+    height + 200,
+    {
+      restitution: 0,
+      isStatic: true,
+      friction: 1,
+    }
+  );
+
+  
 
   useEffect(() => {
     let render = Render.create({
@@ -23,104 +56,31 @@ const Test = () => {
       options: {
         width: width,
         height: height,
-        background: "rgba(255, 0, 0, 0.5)",
+        background: "lightGreen",
         wireframes: false,
       },
     });
 
-    engine.gravity.y = 0;
-
-    const floor = Bodies.rectangle(width / 2, height + 10, width, 20, {
-      isStatic: true,
-      render: {
-        fillStyle: "blue",
-      },
-    });
-
-    const ceiling = Bodies.rectangle(width / 2, -10, width, 20, {
-      isStatic: true,
-      render: {
-        fillStyle: "blue",
-      },
-    });
-
-    const wallLeft = Bodies.rectangle(-10, height / 2, 20, height, {
-      isStatic: true,
-      render: {
-        fillStyle: "blue",
-      },
-    });
-
-    const wallRight = Bodies.rectangle(width + 10, height / 2, 20, height, {
-      isStatic: true,
-      render: {
-        fillStyle: "blue",
-      },
-    });
-
-    let mouse = Matter.Mouse.create(render.canvas);
-    let mouseConstraint = Matter.MouseConstraint.create(engine, {
-      mouse: mouse,
-      constraint: {
-        render: { visible: false },
-      },
-    });
-    render.mouse = mouse;
-
-    const playerA = Bodies.circle(200, height / 2, 20, {
-      restitution: 0,
-      render: {
-        fillStyle: "yellow",
-      },
-    });
-
-    const playerB = Bodies.circle(width - 200, height / 2, 20, {
-      restitution: 0,
-      render: {
-        fillStyle: "green",
-      },
-    });
-
-    const ball = Bodies.circle(width / 2, height / 2, 10, {
-      restitution: 0.5,
-      render: {
-        fillStyle: "white",
-      },
-    });
-
     World.add(engine.world, [
-      floor,
-      ceiling,
+      wallUp,
+      wallDown,
       wallLeft,
       wallRight,
-      playerA,
-      playerB,
-      ball,
-      mouseConstraint,
     ]);
 
     Runner.run(engine);
     Render.run(render);
   });
 
-  document.body.addEventListener("click", function (e) {
-    const ball = Bodies.circle(e.screenX - 8, e.screenY - 80, 20, {
-      restitution: 1,
-      render: {
-        fillStyle: "yellow",
-      },
-    });
-    World.add(engine.world, ball);
-  });
-
   return (
     <>
-      <div ref={boxRef}>
-        <canvas ref={canvasRef} />
+      <div ref={boxRef} className="box">
+        <div>
+          <canvas ref={canvasRef} />
+        </div>
       </div>
     </>
   );
 };
 
-export default Test;
-
+export default Hax;
