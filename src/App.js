@@ -4,7 +4,7 @@ import Test from "./comp/Test"
 function App() {
   return (
     <div>
-      <Hax />
+      <Test />
     </div>
   );
 }

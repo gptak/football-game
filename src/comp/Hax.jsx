@@ -378,11 +378,11 @@ const Hax = () => {
 
   // goals handler
 
-  Events.on(engine, "collisionStart", function (event) {
-    var pairs = event.pairs;
+  Events.on(engine, "collisionStart", (e) => {
+    let pairs = e.pairs;
 
-    for (var i = 0, j = pairs.length; i !== j; ++i) {
-      var pair = pairs[i];
+    for (let i = 0, j = pairs.length; i !== j; ++i) {
+      let pair = pairs[i];
 
       if (pair.bodyA === ball && pair.bodyB === playerAGoal) {
         goalSignA.render.fillStyle = "yellow";
