@@ -1,0 +1,64 @@
+.football {
+  display: flex;
+  flex-direction: column;
+  background-image: linear-gradient(45deg, #387a38, rgb(43, 81, 138));
+  min-height: 100vh;
+  color: white;
+  font-weight: 700;
+}
+
+.title {
+  font-size: 2rem;
+  text-align: center;
+  padding-top: 0.5em;
+  margin-bottom: 1em;
+}
+
+.scoreboard {
+  font-size: 2rem;
+  text-align: center;
+  padding-bottom: 0.5em;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.box canvas {
+  border: solid 2px black;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  align-items: center;
+  margin: 3em;
+}
+
+.result_message {
+  font-size: 3rem;
+  text-align: center;
+}
+
+.result button {
+  padding: 1em 1.5em;
+  margin-top: 5em;
+  font-size: 1.8rem;
+  background-color: white;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 2px 2px 5px black;
+  text-transform: uppercase;
+  font-weight: 700;
+  transition: all 0.3s ;
+  
+}
+
+.result button:hover{
+  background-color: #ddd;
+  
+
+}

@@ -1,10 +1,10 @@
-import Hax from "./comp/Hax";
-import Test from "./comp/Test"
+import Football from "./comp/Football";
+import './App.css'
 
 function App() {
   return (
     <div>
-      <Test />
+      <Football />
     </div>
   );
 }

@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
-import "./Hax.css";
+import "./Football.css";
 
-const Hax = () => {
+const Football = () => {
   const [aGoalCounter, setAGoalCounter] = useState(0);
   const [bGoalCounter, setBGoalCounter] = useState(0);
+  const [winner, setWinner] = useState("");
   const [aWon, setAWon] = useState(false);
 
   const boxRef = useRef(null);
@@ -20,11 +21,11 @@ const Hax = () => {
   const engine = Engine.create({});
   engine.gravity.y = 0;
 
-  const width = 1400;
-  const height = 800;
+  const width = 1100;
+  const height = 650;
   const goalHeight = height / 4;
-  const ballDiameter = 13;
-  const playerDiameter = 22;
+  const ballDiameter = 12;
+  const playerDiameter = 20;
   let startPosA = 200;
   let startPosB = width - 200;
 
@@ -36,7 +37,7 @@ const Hax = () => {
     render: {
       fillStyle: "blue",
       strokeStyle: "black",
-      lineWidth: 1,
+      lineWidth: 2,
     },
   });
   Body.setMass(playerA, 2.5);
@@ -46,7 +47,7 @@ const Hax = () => {
     render: {
       fillStyle: "red",
       strokeStyle: "black",
-      lineWidth: 1,
+      lineWidth: 2,
     },
   });
   Body.setMass(playerB, 2.5);
@@ -56,7 +57,7 @@ const Hax = () => {
     render: {
       fillStyle: "white",
       strokeStyle: "black",
-      lineWidth: 1,
+      lineWidth: 2,
     },
   });
   Body.setMass(ball, 1);
@@ -77,12 +78,12 @@ const Hax = () => {
     },
   });
 
-  const wallUp = Bodies.rectangle(width / 2, height + 50, width, 100, {
+  const wallUp = Bodies.rectangle(width / 2, -50, width, 100, {
     restitution: 0,
     isStatic: true,
   });
 
-  const wallDown = Bodies.rectangle(width / 2, -50, width, 100, {
+  const wallDown = Bodies.rectangle(width / 2, height + 50, width, 100, {
     restitution: 0,
     isStatic: true,
   });
@@ -114,9 +115,9 @@ const Hax = () => {
       restitution: 0,
       isStatic: true,
       render: {
-        fillStyle: "green",
+        fillStyle: "#0b490b",
         strokeStyle: "black",
-        lineWidth: 1,
+        lineWidth: 3,
       },
     }
   );
@@ -129,9 +130,9 @@ const Hax = () => {
       restitution: 0,
       isStatic: true,
       render: {
-        fillStyle: "green",
+        fillStyle: "#0b490b",
         strokeStyle: "black",
-        lineWidth: 1,
+        lineWidth: 3,
       },
     }
   );
@@ -177,9 +178,9 @@ const Hax = () => {
       restitution: 0,
       isStatic: true,
       render: {
-        fillStyle: "green",
+        fillStyle: "#0b490b",
         strokeStyle: "black",
-        lineWidth: 1,
+        lineWidth: 3,
       },
     }
   );
@@ -192,12 +193,16 @@ const Hax = () => {
       restitution: 0,
       isStatic: true,
       render: {
-        fillStyle: "green",
+        fillStyle: "#0b490b",
         strokeStyle: "black",
-        lineWidth: 1,
+        lineWidth: 3,
       },
     }
   );
+
+  useEffect(() => {
+    checkScore();
+  });
 
   useEffect(() => {
     const render = Render.create({
@@ -207,7 +212,7 @@ const Hax = () => {
       options: {
         width: width,
         height: height,
-        background: "lightGreen",
+        background: "#169416",
         wireframes: false,
       },
     });
@@ -236,7 +241,7 @@ const Hax = () => {
 
   // players movement and shooting
 
-  const moveForce = 0.0005;
+  const moveForce = 0.0004;
   const shootForce = 0.0005;
 
   const keyHandlers = {
@@ -389,32 +394,57 @@ const Hax = () => {
 
         setTimeout(() => {
           setAGoalCounter(aGoalCounter + 1);
+
           setAWon(false);
-        }, 2000);
+        }, 1000);
       } else if (pair.bodyA === ball && pair.bodyB === playerBGoal) {
         goalSignB.render.fillStyle = "yellow";
         setTimeout(() => {
           setBGoalCounter(bGoalCounter + 1);
+
           setAWon(true);
-        }, 2000);
+        }, 1000);
       }
     }
   });
 
+  const checkScore = () => {
+    if (aGoalCounter >= 2) {
+      setWinner("Red");
+    } else if (bGoalCounter >= 2) {
+      setWinner("Blue");
+    } else {
+      setWinner("");
+    }
+  };
+
+  const playAgain = () => {
+    setAGoalCounter(0);
+    setBGoalCounter(0);
+  };
+
   return (
-    <>
-      <div ref={boxRef} className="box">
-        <div className="scoreBoard">
-          <span>{bGoalCounter}</span>
-          <span> : </span>
-          <span>{aGoalCounter}</span>
-        </div>
-        <div>
+    <div className="football">
+      <header className="title">
+        <h1>Football Game</h1>
+      </header>
+      <div className="scoreboard">
+        <span>{bGoalCounter}</span>
+        <span> : </span>
+        <span>{aGoalCounter}</span>
+      </div>
+      {winner === "" ? (
+        <div ref={boxRef} className="box">
           <canvas ref={canvasRef} />
         </div>
-      </div>
-    </>
+      ) : (
+        <div className="result">
+          <h2 className="result_message">{`${winner} wins!`}</h2>
+          <button onClick={playAgain}>Play again</button>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default Hax;
+export default Football;
