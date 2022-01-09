@@ -1,7 +1,7 @@
 .football {
   display: flex;
   flex-direction: column;
-  background-image: linear-gradient(45deg, #387a38, rgb(43, 81, 138));
+  background-image: linear-gradient(45deg, #6188c4, #3b883b);
   min-height: 100vh;
   color: white;
   font-weight: 700;
@@ -43,6 +43,14 @@
   text-align: center;
 }
 
+.Red {
+  color: red;
+}
+
+.Blue {
+  color: blue;
+}
+
 .result button {
   padding: 1em 1.5em;
   margin-top: 5em;
@@ -53,12 +61,46 @@
   box-shadow: 2px 2px 5px black;
   text-transform: uppercase;
   font-weight: 700;
-  transition: all 0.3s ;
-  
+  transition: all 0.3s;
 }
 
-.result button:hover{
+.result button:hover {
   background-color: #ddd;
-  
+  cursor: pointer;
+}
 
+@media (min-width: 600px) {
+  .title {
+    font-size: 1rem;
+  }
+
+  .box canvas {
+    width: 580px;
+  }
+}
+
+@media (min-width: 800px) {
+  .box canvas {
+    width: 780px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .box canvas {
+    width: 1000px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .box canvas {
+    width: auto;
+  }
 }

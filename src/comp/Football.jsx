@@ -439,7 +439,7 @@ const Football = () => {
         </div>
       ) : (
         <div className="result">
-          <h2 className="result_message">{`${winner} wins!`}</h2>
+          <h2 className="result_message"><span className={winner}>{winner}</span> won!</h2>
           <button onClick={playAgain}>Play again</button>
         </div>
       )}
