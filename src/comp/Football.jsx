@@ -21,15 +21,14 @@ const Football = () => {
   const engine = Engine.create({});
   engine.gravity.y = 0;
 
-
-  const winScore = 5;   
+  const winScore = 5;
   const width = 1100;
   const height = 650;
   const goalHeight = height / 4;
   const ballDiameter = 12;
   const playerDiameter = 20;
-  let startPosA = 200;
-  let startPosB = width - 200;
+  let startPosA;
+  let startPosB;
 
   aWon ? (startPosA = 200) : (startPosA = width / 2 - 100);
   aWon ? (startPosB = width / 2 + 100) : (startPosB = width - 200);
@@ -83,17 +82,19 @@ const Football = () => {
   const wallUp = Bodies.rectangle(width / 2, -50, width, 100, {
     restitution: 0,
     isStatic: true,
+    friction: 0,
   });
 
   const wallDown = Bodies.rectangle(width / 2, height + 50, width, 100, {
     restitution: 0,
     isStatic: true,
+    friction: 0,
   });
 
   const wallLeft = Bodies.rectangle(-50, height / 2, 100, height + 200, {
     restitution: 0,
     isStatic: true,
-    friction: 1,
+    friction: 0,
   });
 
   const wallRight = Bodies.rectangle(
@@ -104,7 +105,7 @@ const Football = () => {
     {
       restitution: 0,
       isStatic: true,
-      friction: 1,
+      friction: 0,
     }
   );
 
@@ -115,6 +116,7 @@ const Football = () => {
     (height - goalHeight) / 2,
     {
       restitution: 0,
+      friction: 0,
       isStatic: true,
       render: {
         fillStyle: "#0b490b",
@@ -130,6 +132,40 @@ const Football = () => {
     (height - goalHeight) / 2,
     {
       restitution: 0,
+      friction: 0,
+      isStatic: true,
+      render: {
+        fillStyle: "#0b490b",
+        strokeStyle: "black",
+        lineWidth: 3,
+      },
+    }
+  );
+
+  const band3 = Bodies.rectangle(
+    width,
+    (height - goalHeight) / 4,
+    80,
+    (height - goalHeight) / 2,
+    {
+      restitution: 0,
+      friction: 0,
+      isStatic: true,
+      render: {
+        fillStyle: "#0b490b",
+        strokeStyle: "black",
+        lineWidth: 3,
+      },
+    }
+  );
+  const band4 = Bodies.rectangle(
+    width,
+    (3 * height + goalHeight) / 4,
+    80,
+    (height - goalHeight) / 2,
+    {
+      restitution: 0,
+      friction: 0,
       isStatic: true,
       render: {
         fillStyle: "#0b490b",
@@ -171,55 +207,31 @@ const Football = () => {
     }
   );
 
-  const band3 = Bodies.rectangle(
-    width,
-    (height - goalHeight) / 4,
-    80,
-    (height - goalHeight) / 2,
-    {
-      restitution: 0,
-      isStatic: true,
-      render: {
-        fillStyle: "#0b490b",
-        strokeStyle: "black",
-        lineWidth: 3,
-      },
-    }
-  );
-  const band4 = Bodies.rectangle(
-    width,
-    (3 * height + goalHeight) / 4,
-    80,
-    (height - goalHeight) / 2,
-    {
-      restitution: 0,
-      isStatic: true,
-      render: {
-        fillStyle: "#0b490b",
-        strokeStyle: "black",
-        lineWidth: 3,
-      },
-    }
-  );
+  const bigCircle = Bodies.circle(width / 2, height / 2, height / 5, {
+    isSensor: true,
+    isStatic: true,
+    render: {
+      fillStyle: "white",
+    },
+  });
 
-  const playAgain = () => {
-    setAGoalCounter(0);
-    setBGoalCounter(0);
-  };
+  const smallCircle = Bodies.circle(width / 2, height / 2, height / 5 - 10, {
+    isSensor: true,
+    isStatic: true,
+    render: {
+      fillStyle: "#169416",
+    },
+  });
+  
+  const halfLine = Bodies.rectangle(width / 2, height / 2, 10, height, {
+    isSensor: true,
+    isStatic: true,
+    render: {
+      fillStyle: "white",
+    },
+  });
 
-  useEffect(() => {
-    const checkScore = () => {
-      if (aGoalCounter >= winScore) {
-        setWinner("Red");
-      } else if (bGoalCounter >= winScore) {
-        setWinner("Blue");
-      } else {
-        setWinner("");
-      }
-    };
-
-    checkScore();
-  }, [aGoalCounter, bGoalCounter]);
+  //game renederer
 
   useEffect(() => {
     const render = Render.create({
@@ -235,16 +247,19 @@ const Football = () => {
     });
 
     World.add(engine.world, [
-      wallUp,
-      wallDown,
-      wallLeft,
-      wallRight,
       playerAGoal,
       playerBGoal,
+      bigCircle,
+      smallCircle,
+      halfLine,
       band1,
       band2,
       band3,
       band4,
+      wallUp,
+      wallDown,
+      wallLeft,
+      wallRight,
       playerA,
       playerB,
       ball,
@@ -255,6 +270,22 @@ const Football = () => {
     Runner.run(engine);
     Render.run(render);
   });
+
+  // win condition handler
+
+  useEffect(() => {
+    const checkScore = () => {
+      if (aGoalCounter >= winScore) {
+        setWinner("Red");
+      } else if (bGoalCounter >= winScore) {
+        setWinner("Blue");
+      } else {
+        setWinner("");
+      }
+    };
+
+    checkScore();
+  }, [aGoalCounter, bGoalCounter]);
 
   // players movement and shooting
 
@@ -424,6 +455,14 @@ const Football = () => {
       }
     }
   });
+
+   // play again handler
+
+   const playAgain = () => {
+    setAGoalCounter(0);
+    setBGoalCounter(0);
+  };
+
 
   return (
     <div className="football">
