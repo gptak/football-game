@@ -21,6 +21,8 @@ const Football = () => {
   const engine = Engine.create({});
   engine.gravity.y = 0;
 
+
+  const winScore = 5;   
   const width = 1100;
   const height = 650;
   const goalHeight = height / 4;
@@ -200,9 +202,24 @@ const Football = () => {
     }
   );
 
+  const playAgain = () => {
+    setAGoalCounter(0);
+    setBGoalCounter(0);
+  };
+
   useEffect(() => {
+    const checkScore = () => {
+      if (aGoalCounter >= winScore) {
+        setWinner("Red");
+      } else if (bGoalCounter >= winScore) {
+        setWinner("Blue");
+      } else {
+        setWinner("");
+      }
+    };
+
     checkScore();
-  });
+  }, [aGoalCounter, bGoalCounter]);
 
   useEffect(() => {
     const render = Render.create({
@@ -408,21 +425,6 @@ const Football = () => {
     }
   });
 
-  const checkScore = () => {
-    if (aGoalCounter >= 2) {
-      setWinner("Red");
-    } else if (bGoalCounter >= 2) {
-      setWinner("Blue");
-    } else {
-      setWinner("");
-    }
-  };
-
-  const playAgain = () => {
-    setAGoalCounter(0);
-    setBGoalCounter(0);
-  };
-
   return (
     <div className="football">
       <header className="title">
@@ -439,7 +441,9 @@ const Football = () => {
         </div>
       ) : (
         <div className="result">
-          <h2 className="result_message"><span className={winner}>{winner}</span> won!</h2>
+          <h2 className="result_message">
+            <span className={winner}>{winner}</span> won!
+          </h2>
           <button onClick={playAgain}>Play again</button>
         </div>
       )}

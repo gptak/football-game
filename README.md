@@ -1,7 +1,8 @@
 # Control
 
-Blue player: movement - WASD, shooting - Q\
-Red player: movement - Arrows, shooting - P
+Blue player: movement - WASD, shooting - Q\\
+Red player: movement - Arrows, shooting - P\\
+The game ends when any player scores 5 goals.
 
 # Getting Started with Create React App
 
