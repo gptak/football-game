@@ -21,7 +21,7 @@ const Football = () => {
   const engine = Engine.create({});
   engine.gravity.y = 0;
 
-  const winScore = 5;
+  const winScore = 2;
   const width = 1100;
   const height = 650;
   const goalHeight = height / 4;
@@ -222,7 +222,7 @@ const Football = () => {
       fillStyle: "#169416",
     },
   });
-  
+
   const halfLine = Bodies.rectangle(width / 2, height / 2, 10, height, {
     isSensor: true,
     isStatic: true,
@@ -456,14 +456,6 @@ const Football = () => {
     }
   });
 
-   // play again handler
-
-   const playAgain = () => {
-    setAGoalCounter(0);
-    setBGoalCounter(0);
-  };
-
-
   return (
     <div className="football">
       <header className="title">
@@ -483,7 +475,7 @@ const Football = () => {
           <h2 className="result_message">
             <span className={winner}>{winner}</span> won!
           </h2>
-          <button onClick={playAgain}>Play again</button>
+            <p>Press F5 to play again.</p>
         </div>
       )}
     </div>
