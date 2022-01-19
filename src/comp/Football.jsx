@@ -21,7 +21,7 @@ const Football = () => {
   const engine = Engine.create({});
   engine.gravity.y = 0;
 
-  const winScore = 2;
+  const winScore = 5;
   const width = 1100;
   const height = 650;
   const goalHeight = height / 4;
