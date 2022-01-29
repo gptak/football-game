@@ -233,6 +233,18 @@ const Football = () => {
 
   //game renederer
 
+  const render = Render.create({
+    element: boxRef.current,
+    engine: engine,
+    canvas: canvasRef.current,
+    options: {
+      width: width,
+      height: height,
+      background: "#169416",
+      wireframes: false,
+    },
+  });
+
   useEffect(() => {
     const render = Render.create({
       element: boxRef.current,
@@ -429,6 +441,31 @@ const Football = () => {
     });
   });
 
+  // AI player
+
+  Events.on(engine, "beforeUpdate", () => {
+    Body.applyForce(
+      playerB,
+      {
+        x: playerB.position.x,
+        y: playerB.position.y,
+      },
+      {
+        x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+        y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+      }
+    );
+  });
+
+  const reset = () => {
+    Engine.clear(engine);
+    Render.stop(render);
+    render.canvas.remove();
+    render.canvas = null;
+    render.context = null;
+    render.textures = {};
+  };
+
   // goals handler
 
   Events.on(engine, "collisionStart", (e) => {
@@ -441,15 +478,15 @@ const Football = () => {
         goalSignA.render.fillStyle = "yellow";
 
         setTimeout(() => {
+          reset()
           setAGoalCounter(aGoalCounter + 1);
-
           setAWon(false);
         }, 1000);
       } else if (pair.bodyA === ball && pair.bodyB === playerBGoal) {
         goalSignB.render.fillStyle = "yellow";
         setTimeout(() => {
+          reset()
           setBGoalCounter(bGoalCounter + 1);
-
           setAWon(true);
         }, 1000);
       }
@@ -475,7 +512,7 @@ const Football = () => {
           <h2 className="result_message">
             <span className={winner}>{winner}</span> won!
           </h2>
-            <p>Press F5 to play again.</p>
+          <p>Press F5 to play again.</p>
         </div>
       )}
     </div>
