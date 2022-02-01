@@ -304,7 +304,6 @@ const Football = () => {
 
         if (pair.bodyA === ball && pair.bodyB === playerAGoal) {
           goalSignA.render.fillStyle = "yellow";
-          console.log("gol");
 
           setTimeout(() => {
             reset();
@@ -313,7 +312,6 @@ const Football = () => {
           }, 1000);
         } else if (pair.bodyA === ball && pair.bodyB === playerBGoal) {
           goalSignB.render.fillStyle = "yellow";
-          console.log("gol");
 
           setTimeout(() => {
             reset();
@@ -427,14 +425,17 @@ const Football = () => {
       });
     });
 
-    // AI player
+    // AI movement and shooting
 
     Events.on(engine, "beforeUpdate", () => {
+      // shooting
+
       if (
         Math.abs(playerB.position.x - ball.position.x) <
           ballDiameter + playerDiameter + 10 &&
         Math.abs(playerB.position.y - ball.position.y) <
-          ballDiameter + playerDiameter + 10
+          ballDiameter + playerDiameter + 10 &&
+        playerB.position.x +30 > ball.position.x
       ) {
         Body.applyForce(
           ball,
@@ -448,24 +449,88 @@ const Football = () => {
           }
         );
       }
-      Body.applyForce(
-        playerB,
-        {
-          x: playerB.position.x,
-          y: playerB.position.y,
-        },
-        {
-          x: moveForce * Math.sign(ball.position.x - playerB.position.x),
-          y: moveForce * Math.sign(ball.position.y - playerB.position.y),
-        }
-      );
+
+      // movement
+
+      if (playerB.position.x < width / 2 && playerB.position.y < height / 2) {
+        Body.applyForce(
+          playerB,
+          {
+            x: playerB.position.x,
+            y: playerB.position.y,
+          },
+          {
+            x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+            y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+          }
+        );
+      } else if (
+        playerB.position.x < width / 2 &&
+        playerB.position.y > height / 2
+      ) {
+        Body.applyForce(
+          playerB,
+          {
+            x: playerB.position.x,
+            y: playerB.position.y,
+          },
+          {
+            x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+            y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+          }
+        );
+      } else if (
+        playerB.position.x > width / 2 &&
+        playerB.position.y > height / 2
+      ) {
+        Body.applyForce(
+          playerB,
+          {
+            x: playerB.position.x,
+            y: playerB.position.y-3,
+          },
+          {
+            x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+            y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+          }
+        );
+      } else if (
+        playerB.position.x > width / 2 &&
+        playerB.position.y < height / 2
+      ) {
+        Body.applyForce(
+          playerB,
+          {
+            x: playerB.position.x,
+            y: playerB.position.y+3,
+          },
+          {
+            x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+            y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+          }
+        );
+      } else {
+        Body.applyForce(
+          playerB,
+          {
+            x: playerB.position.x,
+            y: playerB.position.y,
+          },
+          {
+            x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+            y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+          }
+        );
+      }
     });
 
     checkScore();
+    if (aGoalCounter < winScore && bGoalCounter < winScore) {
+      Runner.run(engine);
+      console.log("odpalam silnik");
+      Render.run(render);
+    }
 
-    Runner.run(engine);
-    console.log("odpalam silnik");
-    Render.run(render);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aGoalCounter, bGoalCounter]);
 
