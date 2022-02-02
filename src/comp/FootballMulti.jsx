@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import Matter from "matter-js";
 import "./Football.css";
 
-const Football = () => {
+const FootballMulti = () => {
   const [aGoalCounter, setAGoalCounter] = useState(0);
   const [bGoalCounter, setBGoalCounter] = useState(0);
   const [winner, setWinner] = useState("");
@@ -454,24 +453,24 @@ const Football = () => {
       // movement
 
       if (ball.position.x > playerB.position.x) {
-        if (ball.position.y >= height / 2) {
+        if(ball.position.y >= height/2){
           Body.applyForce(
             playerB,
             {
-              x: playerB.position.x + 10,
-              y: playerB.position.y - 10,
+              x: playerB.position.x+10,
+              y: playerB.position.y-10,
             },
             {
               x: moveForce * Math.sign(ball.position.x - playerB.position.x),
               y: moveForce * Math.sign(ball.position.y - playerB.position.y),
             }
           );
-        } else if (ball.position.y < height / 2) {
+        }else if (ball.position.y < height/2){
           Body.applyForce(
             playerB,
             {
-              x: playerB.position.x + 10,
-              y: playerB.position.y + 10,
+              x: playerB.position.x+10,
+              y: playerB.position.y+10,
             },
             {
               x: moveForce * Math.sign(ball.position.x - playerB.position.x),
@@ -480,7 +479,7 @@ const Football = () => {
           );
         }
       } else {
-        if (ball.position.y >= height / 2) {
+        if(ball.position.y >= height/2){
           Body.applyForce(
             playerB,
             {
@@ -492,7 +491,7 @@ const Football = () => {
               y: moveForce * Math.sign(ball.position.y - playerB.position.y),
             }
           );
-        } else if (ball.position.y < height / 2) {
+        }else if (ball.position.y < height/2){
           Body.applyForce(
             playerB,
             {
@@ -518,20 +517,18 @@ const Football = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aGoalCounter, bGoalCounter]);
 
-  // new hame handler
 
   const newGameHandler = () => {
-    setAGoalCounter(0);
+    setAGoalCounter(0)
     setBGoalCounter(0);
     setWinner("");
-    setAWon(false);
-  };
-
+    setAWon(false)
+  }
 
   return (
     <div className="football">
       <header className="title">
-        <h1>Football Game</h1>
+        <h1>FootballMulti Game</h1>
       </header>
       <div className="scoreboard">
         <span>{bGoalCounter}</span>
@@ -547,12 +544,11 @@ const Football = () => {
           <h2 className="result_message">
             <span className={winner}>{winner}</span> won!
           </h2>
-          <button className="button" onClick={newGameHandler}>Play again</button>
-          <Link className="button" to="/">Back to menu</Link>
+          <button onClick={newGameHandler}>Play again</button>
         </div>
       )}
     </div>
   );
 };
 
-export default Football;
+export default FootballMulti;
