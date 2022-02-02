@@ -7,7 +7,7 @@ const Menu = () => {
       <header className="title">
         <h1>Football Game</h1>
       </header>
-      <nav>
+      <nav className="nav">
         <Link className="button" to="/single">Single Player</Link>
         <Link className="button" to="/multi">Two Players</Link>
       </nav>

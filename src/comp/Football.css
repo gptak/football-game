@@ -72,6 +72,12 @@
   cursor: pointer;
 }
 
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 @media (min-width: 600px) {
   .title {
     font-size: 1rem;

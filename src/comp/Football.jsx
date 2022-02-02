@@ -431,24 +431,46 @@ const Football = () => {
     Events.on(engine, "beforeUpdate", () => {
       // shooting
 
+      if (ball.position.x > playerB.position.x) {
+      }
+
       if (
         Math.abs(playerB.position.x - ball.position.x) <
           ballDiameter + playerDiameter + 10 &&
         Math.abs(playerB.position.y - ball.position.y) <
-          ballDiameter + playerDiameter + 10 &&
-        playerB.position.x > ball.position.x
+          ballDiameter + playerDiameter + 10
       ) {
-        Body.applyForce(
-          ball,
-          {
-            x: ball.position.x,
-            y: ball.position.y,
-          },
-          {
-            x: shootForce * (ball.position.x - playerB.position.x),
-            y: shootForce * (ball.position.y - playerB.position.y),
-          }
-        );
+        if (
+          playerB.position.x <= width / 2 &&
+          ball.position.x + 5 < playerB.position.x
+        ) {
+          Body.applyForce(
+            ball,
+            {
+              x: ball.position.x,
+              y: ball.position.y,
+            },
+            {
+              x: shootForce * (ball.position.x - playerB.position.x),
+              y: shootForce * (ball.position.y - playerB.position.y),
+            }
+          );
+        } else if (
+          playerB.position.x > width / 2 &&
+          ball.position.x < playerB.position.x
+        ) {
+          Body.applyForce(
+            ball,
+            {
+              x: ball.position.x,
+              y: ball.position.y,
+            },
+            {
+              x: shootForce * (ball.position.x - playerB.position.x),
+              y: shootForce * (ball.position.y - playerB.position.y),
+            }
+          );
+        }
       }
 
       // movement
@@ -504,6 +526,18 @@ const Football = () => {
               y: moveForce * Math.sign(ball.position.y - playerB.position.y),
             }
           );
+        } else {
+          Body.applyForce(
+            playerB,
+            {
+              x: playerB.position.x,
+              y: playerB.position.y,
+            },
+            {
+              x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+              y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+            }
+          );
         }
       }
     });
@@ -527,7 +561,6 @@ const Football = () => {
     setAWon(false);
   };
 
-
   return (
     <div className="football">
       <header className="title">
@@ -547,8 +580,12 @@ const Football = () => {
           <h2 className="result_message">
             <span className={winner}>{winner}</span> won!
           </h2>
-          <button className="button" onClick={newGameHandler}>Play again</button>
-          <Link className="button" to="/">Back to menu</Link>
+          <button className="button" onClick={newGameHandler}>
+            Play again
+          </button>
+          <Link className="button" to="/">
+            Back to menu
+          </Link>
         </div>
       )}
     </div>
