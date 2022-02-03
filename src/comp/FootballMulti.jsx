@@ -368,7 +368,46 @@ const FootballMulti = () => {
           { x: 0, y: moveForce }
         );
       },
-
+      ArrowRight: () => {
+        Body.applyForce(
+          playerB,
+          {
+            x: playerB.position.x,
+            y: playerB.position.y,
+          },
+          { x: moveForce, y: 0 }
+        );
+      },
+      ArrowLeft: () => {
+        Body.applyForce(
+          playerB,
+          {
+            x: playerB.position.x,
+            y: playerB.position.y,
+          },
+          { x: -moveForce, y: 0 }
+        );
+      },
+      ArrowUp: () => {
+        Body.applyForce(
+          playerB,
+          {
+            x: playerB.position.x,
+            y: playerB.position.y,
+          },
+          { x: 0, y: -moveForce }
+        );
+      },
+      ArrowDown: () => {
+        Body.applyForce(
+          playerB,
+          {
+            x: playerB.position.x,
+            y: playerB.position.y,
+          },
+          { x: 0, y: moveForce }
+        );
+      },
       KeyQ: () => {
         if (
           Math.abs(playerA.position.x - ball.position.x) < 45 &&
@@ -446,7 +485,7 @@ const FootballMulti = () => {
   return (
     <div className="football">
       <header className="title">
-        <h1>FootballMulti Game</h1>
+        <h1>Football Game</h1>
       </header>
       <div className="scoreboard">
         <span>{bGoalCounter}</span>
