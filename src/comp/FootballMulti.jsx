@@ -182,6 +182,55 @@ const FootballMulti = () => {
       }
     );
 
+    const band5 = Bodies.rectangle(20, 20, 150, 40, {
+      restitution: 0,
+      friction: 0,
+      isStatic: true,
+      render: {
+        fillStyle: "#0b490b",
+        strokeStyle: "black",
+        lineWidth: 3,
+      },
+    });
+
+    const band6 = Bodies.rectangle(width-20, 20, 150, 40, {
+      restitution: 0,
+      friction: 0,
+      isStatic: true,
+      render: {
+        fillStyle: "#0b490b",
+        strokeStyle: "black",
+        lineWidth: 3,
+      },
+    });
+
+    const band7 = Bodies.rectangle(20, height-20, 150, 40, {
+      restitution: 0,
+      friction: 0,
+      isStatic: true,
+      render: {
+        fillStyle: "#0b490b",
+        strokeStyle: "black",
+        lineWidth: 3,
+      },
+    });
+
+    const band8 = Bodies.rectangle(width-20, height-20, 150, 40, {
+      restitution: 0,
+      friction: 0,
+      isStatic: true,
+      render: {
+        fillStyle: "#0b490b",
+        strokeStyle: "black",
+        lineWidth: 3,
+      },
+    });
+
+    Body.setAngle(band5, -0.75);
+    Body.setAngle(band6, 0.75);
+    Body.setAngle(band7, 0.75);
+    Body.setAngle(band8, -0.75);
+
     const goalSignA = Bodies.rectangle(
       20,
       (height - goalHeight) / 2 - 20,
@@ -256,6 +305,10 @@ const FootballMulti = () => {
       bigCircle,
       smallCircle,
       halfLine,
+      band5,
+      band6,
+      band7,
+      band8,
       band1,
       band2,
       band3,
