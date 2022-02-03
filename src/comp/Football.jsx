@@ -597,9 +597,11 @@ const Football = () => {
 
     checkScore();
     if (aGoalCounter < winScore && bGoalCounter < winScore) {
-      Runner.run(engine);
-      console.log("odpalam silnik");
       Render.run(render);
+      document.addEventListener("keydown", () => {
+        Runner.run(engine);
+        console.log("odpalam silnik");
+      },{once:true});
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

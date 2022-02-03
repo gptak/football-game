@@ -193,7 +193,7 @@ const FootballMulti = () => {
       },
     });
 
-    const band6 = Bodies.rectangle(width-20, 20, 150, 40, {
+    const band6 = Bodies.rectangle(width - 20, 20, 150, 40, {
       restitution: 0,
       friction: 0,
       isStatic: true,
@@ -204,7 +204,7 @@ const FootballMulti = () => {
       },
     });
 
-    const band7 = Bodies.rectangle(20, height-20, 150, 40, {
+    const band7 = Bodies.rectangle(20, height - 20, 150, 40, {
       restitution: 0,
       friction: 0,
       isStatic: true,
@@ -215,7 +215,7 @@ const FootballMulti = () => {
       },
     });
 
-    const band8 = Bodies.rectangle(width-20, height-20, 150, 40, {
+    const band8 = Bodies.rectangle(width - 20, height - 20, 150, 40, {
       restitution: 0,
       friction: 0,
       isStatic: true,
@@ -519,21 +519,22 @@ const FootballMulti = () => {
 
     checkScore();
     if (aGoalCounter < winScore && bGoalCounter < winScore) {
-      Runner.run(engine);
-      console.log("odpalam silnik");
       Render.run(render);
+      document.addEventListener("keydown", () => {
+        Runner.run(engine);
+        console.log("odpalam silnik");
+      },{once:true});
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aGoalCounter, bGoalCounter]);
 
-
   const newGameHandler = () => {
-    setAGoalCounter(0)
+    setAGoalCounter(0);
     setBGoalCounter(0);
     setWinner("");
-    setAWon(false)
-  }
+    setAWon(false);
+  };
 
   return (
     <div className="football">
