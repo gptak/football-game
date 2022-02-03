@@ -23,7 +23,7 @@ const Football = () => {
     const engine = Engine.create({});
     engine.gravity.y = 0;
 
-    const winScore = 2;
+    const winScore = 3;
     const width = 1100;
     const height = 650;
     const goalHeight = height / 4;
@@ -194,7 +194,7 @@ const Football = () => {
       },
     });
 
-    const band6 = Bodies.rectangle(width-20, 20, 150, 40, {
+    const band6 = Bodies.rectangle(width - 20, 20, 150, 40, {
       restitution: 0,
       friction: 0,
       isStatic: true,
@@ -205,7 +205,7 @@ const Football = () => {
       },
     });
 
-    const band7 = Bodies.rectangle(20, height-20, 150, 40, {
+    const band7 = Bodies.rectangle(20, height - 20, 150, 40, {
       restitution: 0,
       friction: 0,
       isStatic: true,
@@ -216,7 +216,7 @@ const Football = () => {
       },
     });
 
-    const band8 = Bodies.rectangle(width-20, height-20, 150, 40, {
+    const band8 = Bodies.rectangle(width - 20, height - 20, 150, 40, {
       restitution: 0,
       friction: 0,
       isStatic: true,
@@ -337,7 +337,7 @@ const Football = () => {
       }
     };
 
-    // goals handler
+    // goal handler
 
     Events.on(engine, "collisionStart", (e) => {
       let pairs = e.pairs;
@@ -358,7 +358,9 @@ const Football = () => {
 
         if (pair.bodyA === ball && pair.bodyB === playerAGoal) {
           goalSignA.render.fillStyle = "yellow";
-
+          setTimeout(()=>{
+            Body.set(ball, "isStatic", true);
+          },50)
           setTimeout(() => {
             reset();
             setAWon(false);
@@ -366,7 +368,9 @@ const Football = () => {
           }, 1000);
         } else if (pair.bodyA === ball && pair.bodyB === playerBGoal) {
           goalSignB.render.fillStyle = "yellow";
-
+          setTimeout(()=>{
+            Body.set(ball, "isStatic", true);
+          },50)
           setTimeout(() => {
             reset();
             setAWon(true);
@@ -598,10 +602,14 @@ const Football = () => {
     checkScore();
     if (aGoalCounter < winScore && bGoalCounter < winScore) {
       Render.run(render);
-      document.addEventListener("keydown", () => {
-        Runner.run(engine);
-        console.log("odpalam silnik");
-      },{once:true});
+      document.addEventListener(
+        "keydown",
+        () => {
+          Runner.run(engine);
+          console.log("odpalam silnik");
+        },
+        { once: true }
+      );
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -615,6 +623,13 @@ const Football = () => {
     setWinner("");
     setAWon(false);
   };
+
+  let resultMessage;
+  if (winner === "Blue") {
+    resultMessage = "You won!";
+  } else {
+    resultMessage = "You lose!";
+  }
 
   return (
     <div className="football">
@@ -632,9 +647,7 @@ const Football = () => {
         </div>
       ) : (
         <div className="result">
-          <h2 className="result_message">
-            <span className={winner}>{winner}</span> won!
-          </h2>
+          <h2 className="result_message">{resultMessage}</h2>
           <button className="button" onClick={newGameHandler}>
             Play again
           </button>
