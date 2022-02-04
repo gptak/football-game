@@ -494,7 +494,7 @@ const Football = () => {
         Math.abs(playerB.position.y - ball.position.y) <
           ballDiameter + playerDiameter + 10
       ) {
-        if(ball.position.x<playerB.position.x){
+        if (ball.position.x < playerB.position.x) {
           Body.applyForce(
             ball,
             {
@@ -506,49 +506,79 @@ const Football = () => {
               y: shootForce * (ball.position.y - playerB.position.y),
             }
           );
-        } else {}
+        } else {
+        }
       }
 
       // movement
-     if(ball.position.x<playerB.position.x){
-      Body.applyForce(
-        playerB,
-        {
-          x: playerB.position.x,
-          y: playerB.position.y,
-        },
-        {
-          x: moveForce * Math.sign(ball.position.x - playerB.position.x),
-          y: moveForce/2 * Math.sign(ball.position.y - playerB.position.y),
+      if (ball.position.x < playerB.position.x) {
+        if (ball.position.y > height / 2 && ball.position.y < 0.9 * height) {
+          Body.applyForce(
+            playerB,
+            {
+              x: playerB.position.x + 5,
+              y: playerB.position.y - 5,
+            },
+            {
+              x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+              y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+            }
+          );
+        } else if (
+          ball.position.y < height / 2 &&
+          ball.position.y > 0.1 * height
+        ) {
+          Body.applyForce(
+            playerB,
+            {
+              x: playerB.position.x + 5,
+              y: playerB.position.y + 5,
+            },
+            {
+              x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+              y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+            }
+          );
+        } else {
+          Body.applyForce(
+            playerB,
+            {
+              x: playerB.position.x + 1,
+              y: playerB.position.y,
+            },
+            {
+              x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+              y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+            }
+          );
         }
-      );
-     } else {
-      if(ball.position.y > height/2){
-        Body.applyForce(
-          playerB,
-          {
-            x: playerB.position.x,
-            y: playerB.position.y-5,
-          },
-          {
-            x: moveForce * Math.sign(ball.position.x - playerB.position.x),
-            y: moveForce * Math.sign(ball.position.y - playerB.position.y),
-          }
-        );
       } else {
-        Body.applyForce(
-          playerB,
-          {
-            x: playerB.position.x,
-            y: playerB.position.y+5,
-          },
-          {
-            x: moveForce * Math.sign(ball.position.x - playerB.position.x),
-            y: moveForce * Math.sign(ball.position.y - playerB.position.y),
-          }
-        );
+        if (ball.position.y > height / 2) {
+          Body.applyForce(
+            playerB,
+            {
+              x: playerB.position.x,
+              y: playerB.position.y - 10,
+            },
+            {
+              x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+              y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+            }
+          );
+        } else {
+          Body.applyForce(
+            playerB,
+            {
+              x: playerB.position.x,
+              y: playerB.position.y + 10,
+            },
+            {
+              x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+              y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+            }
+          );
+        }
       }
-     }
     });
 
     checkScore();
