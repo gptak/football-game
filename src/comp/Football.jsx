@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Matter from "matter-js";
 import "./Football.css";
 
-const Football = () => {
+const Football = ({playerAColor, playerBColor}) => {
   const [aGoalCounter, setAGoalCounter] = useState(0);
   const [bGoalCounter, setBGoalCounter] = useState(0);
   const [winner, setWinner] = useState("");
@@ -11,6 +11,7 @@ const Football = () => {
 
   const boxRef = useRef(null);
   const canvasRef = useRef(null);
+
 
   useEffect(() => {
     const Engine = Matter.Engine;
@@ -38,7 +39,7 @@ const Football = () => {
     const playerA = Bodies.circle(startPosA, height / 2, playerDiameter, {
       restitution: 0,
       render: {
-        fillStyle: "blue",
+        fillStyle: playerAColor,
         strokeStyle: "black",
         lineWidth: 2,
       },
@@ -48,7 +49,7 @@ const Football = () => {
     const playerB = Bodies.circle(startPosB, height / 2, playerDiameter, {
       restitution: 0,
       render: {
-        fillStyle: "red",
+        fillStyle: playerBColor,
         strokeStyle: "black",
         lineWidth: 2,
       },
@@ -633,7 +634,7 @@ const Football = () => {
           <button className="button" onClick={newGameHandler}>
             Play again
           </button>
-          <Link className="button" to="/">
+          <Link className="button" to="/single">
             Back to menu
           </Link>
         </div>

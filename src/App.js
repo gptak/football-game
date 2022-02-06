@@ -1,16 +1,16 @@
-import {BrowserRouter, Routes, Route } from "react-router-dom";
-import Menu from "./comp/Menu"
-import Football from "./comp/Football";
-import FootballMulti from "./comp/FootballMulti";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Menu from "./comp/Menu";
+import SingleMenu from "./comp/SingleMenu";
+import MultiMenu from "./comp/MuliMenu";
 import "./App.css";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Menu/>}/>
-        <Route path="/single" element={<Football/>}/>
-        <Route path="/multi" element={<FootballMulti/>}/>
+        <Route path="/" element={<Menu />} />
+        <Route path="/single/*" element={<SingleMenu />} />
+        <Route path="/multi/*" element={<MultiMenu />} />
       </Routes>
     </BrowserRouter>
   );
