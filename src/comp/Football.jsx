@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Matter from "matter-js";
 import "./Football.css";
 
-const Football = ({playerAColor, playerBColor}) => {
+const Football = ({ playerAColor, playerBColor }) => {
   const [aGoalCounter, setAGoalCounter] = useState(0);
   const [bGoalCounter, setBGoalCounter] = useState(0);
   const [winner, setWinner] = useState("");
@@ -11,7 +11,6 @@ const Football = ({playerAColor, playerBColor}) => {
 
   const boxRef = useRef(null);
   const canvasRef = useRef(null);
-
 
   useEffect(() => {
     const Engine = Matter.Engine;
@@ -384,7 +383,7 @@ const Football = ({playerAColor, playerBColor}) => {
     // players movement and shooting
 
     const moveForce = 0.0005;
-    const shootForce = 0.0005;
+    const shootForce = 0.0004;
 
     const keyHandlers = {
       KeyD: () => {
