@@ -55,15 +55,7 @@ const Football = ({ playerAColor, playerBColor }) => {
     });
     Body.setMass(playerB, 2.5);
     
-    const playerC = Bodies.circle(startPosB, height / 4, playerDiameter, {
-      restitution: 0,
-      render: {
-        fillStyle: playerBColor,
-        strokeStyle: "black",
-        lineWidth: 2,
-      },
-    });
-    Body.setMass(playerC, 2.5);
+  
 
     const ball = Bodies.circle(width / 2, height / 2, ballDiameter, {
       restitution: 0.5,
@@ -330,7 +322,6 @@ const Football = ({ playerAColor, playerBColor }) => {
       wallRight,
       playerA,
       playerB,
-      playerC,
       ball,
       goalSignA,
       goalSignB,
@@ -592,102 +583,6 @@ const Football = ({ playerAColor, playerBColor }) => {
       }
     });
     
-    Events.on(engine, "beforeUpdate", () => {
-      // shooting
-
-      if (
-        Math.abs(playerC.position.x - ball.position.x) <
-          ballDiameter + playerDiameter + 10 &&
-        Math.abs(playerC.position.y - ball.position.y) <
-          ballDiameter + playerDiameter + 10
-      ) {
-        if (ball.position.x < playerC.position.x) {
-          Body.applyForce(
-            ball,
-            {
-              x: ball.position.x,
-              y: ball.position.y,
-            },
-            {
-              x: shootForce * (ball.position.x - playerC.position.x),
-              y: shootForce * (ball.position.y - playerC.position.y),
-            }
-          );
-        } else {
-        }
-      }
-
-      // movement
-      if (ball.position.x < playerC.position.x) {
-        if (ball.position.y > height / 2 && ball.position.y < 0.9 * height) {
-          Body.applyForce(
-            playerC,
-            {
-              x: playerC.position.x + 5,
-              y: playerC.position.y - 5,
-            },
-            {
-              x: moveForce * Math.sign(ball.position.x - playerC.position.x),
-              y: moveForce * Math.sign(ball.position.y - playerC.position.y),
-            }
-          );
-        } else if (
-          ball.position.y < height / 2 &&
-          ball.position.y > 0.1 * height
-        ) {
-          Body.applyForce(
-            playerC,
-            {
-              x: playerC.position.x + 5,
-              y: playerC.position.y + 5,
-            },
-            {
-              x: moveForce * Math.sign(ball.position.x - playerC.position.x),
-              y: moveForce * Math.sign(ball.position.y - playerC.position.y),
-            }
-          );
-        } else {
-          Body.applyForce(
-            playerC,
-            {
-              x: playerC.position.x + 1,
-              y: playerC.position.y,
-            },
-            {
-              x: moveForce * Math.sign(ball.position.x - playerC.position.x),
-              y: moveForce * Math.sign(ball.position.y - playerC.position.y),
-            }
-          );
-        }
-      } else {
-        if (ball.position.y > height / 2) {
-          Body.applyForce(
-            playerC,
-            {
-              x: playerC.position.x,
-              y: playerC.position.y - 10,
-            },
-            {
-              x: moveForce * Math.sign(ball.position.x - playerC.position.x),
-              y: moveForce * Math.sign(ball.position.y - playerC.position.y),
-            }
-          );
-        } else {
-          Body.applyForce(
-            playerC,
-            {
-              x: playerC.position.x,
-              y: playerC.position.y + 10,
-            },
-            {
-              x: moveForce * Math.sign(ball.position.x - playerC.position.x),
-              y: moveForce * Math.sign(ball.position.y - playerC.position.y),
-            }
-          );
-        }
-      }
-    });
-
     checkScore();
     if (aGoalCounter < winScore && bGoalCounter < winScore) {
       Render.run(render);
