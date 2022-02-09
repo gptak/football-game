@@ -54,8 +54,6 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
       },
     });
     Body.setMass(playerB, 2.5);
-    
-  
 
     const ball = Bodies.circle(width / 2, height / 2, ballDiameter, {
       restitution: 0.5,
@@ -582,7 +580,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
         }
       }
     });
-    
+
     checkScore();
     if (aGoalCounter < winScore && bGoalCounter < winScore) {
       Render.run(render);
@@ -619,6 +617,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
     <div className="football">
       <header className="title">
         <h1>Football Game</h1>
+        <h2>Single Player</h2>
       </header>
       <div className="scoreboard">
         <span>{bGoalCounter}</span>

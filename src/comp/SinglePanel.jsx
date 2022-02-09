@@ -28,6 +28,7 @@ const SinglePanel = ({
     <div className="football">
       <header className="title">
         <h1>Football Game</h1>
+        <h2>Single Player</h2>
       </header>
       <div className="options">
         <div className="option">

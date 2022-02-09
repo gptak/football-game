@@ -544,6 +544,7 @@ const FootballMulti = ({ playerAColor, playerBColor, winScore }) => {
     <div className="football">
       <header className="title">
         <h1>Football Game</h1>
+        <h2>Two Players</h2>
       </header>
       <div className="scoreboard">
         <span>{bGoalCounter}</span>
