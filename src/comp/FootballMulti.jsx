@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import Matter from "matter-js";
 import "./Football.css";
 
-const FootballMulti = () => {
+const FootballMulti = ({ playerAColor, playerBColor, winScore }) => {
   const [aGoalCounter, setAGoalCounter] = useState(0);
   const [bGoalCounter, setBGoalCounter] = useState(0);
   const [winner, setWinner] = useState("");
@@ -22,7 +23,6 @@ const FootballMulti = () => {
     const engine = Engine.create({});
     engine.gravity.y = 0;
 
-    const winScore = 2;
     const width = 1100;
     const height = 650;
     const goalHeight = height / 4;
@@ -37,7 +37,7 @@ const FootballMulti = () => {
     const playerA = Bodies.circle(startPosA, height / 2, playerDiameter, {
       restitution: 0,
       render: {
-        fillStyle: "blue",
+        fillStyle: playerAColor,
         strokeStyle: "black",
         lineWidth: 2,
       },
@@ -47,7 +47,7 @@ const FootballMulti = () => {
     const playerB = Bodies.circle(startPosB, height / 2, playerDiameter, {
       restitution: 0,
       render: {
-        fillStyle: "red",
+        fillStyle: playerBColor,
         strokeStyle: "black",
         lineWidth: 2,
       },
@@ -328,9 +328,9 @@ const FootballMulti = () => {
 
     const checkScore = () => {
       if (aGoalCounter >= winScore) {
-        setWinner("Red");
+        setWinner("Player 2");
       } else if (bGoalCounter >= winScore) {
-        setWinner("Blue");
+        setWinner("Player 1");
       } else {
         setWinner("");
       }
@@ -520,10 +520,14 @@ const FootballMulti = () => {
     checkScore();
     if (aGoalCounter < winScore && bGoalCounter < winScore) {
       Render.run(render);
-      document.addEventListener("keydown", () => {
-        Runner.run(engine);
-        console.log("odpalam silnik");
-      },{once:true});
+      document.addEventListener(
+        "keydown",
+        () => {
+          Runner.run(engine);
+          console.log("odpalam silnik");
+        },
+        { once: true }
+      );
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -552,10 +556,13 @@ const FootballMulti = () => {
         </div>
       ) : (
         <div className="result">
-          <h2 className="result_message">
-            <span className={winner}>{winner}</span> won!
-          </h2>
-          <button onClick={newGameHandler}>Play again</button>
+          <h2 className="result_message">{winner} won!</h2>
+          <button className="button" onClick={newGameHandler}>
+            Play again
+          </button>
+          <Link className="button" to="/multi">
+            Back to menu
+          </Link>
         </div>
       )}
     </div>

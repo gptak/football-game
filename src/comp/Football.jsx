@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Matter from "matter-js";
 import "./Football.css";
 
-const Football = ({ playerAColor, playerBColor }) => {
+const Football = ({ playerAColor, playerBColor, winScore }) => {
   const [aGoalCounter, setAGoalCounter] = useState(0);
   const [bGoalCounter, setBGoalCounter] = useState(0);
   const [winner, setWinner] = useState("");
@@ -23,7 +23,7 @@ const Football = ({ playerAColor, playerBColor }) => {
     const engine = Engine.create({});
     engine.gravity.y = 0;
 
-    const winScore = 3;
+    console.log(winScore);
     const width = 1100;
     const height = 650;
     const goalHeight = height / 4;

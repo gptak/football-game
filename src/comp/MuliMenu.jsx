@@ -5,8 +5,9 @@ import MultiPanel from "./MultiPanel";
 import "./Football.css";
 
 const MultiMenu = () => {
-  const [playerAColor, setPlayerAColor] = useState("#0033FF");
+  const [playerAColor, setPlayerAColor] = useState("#0000FF");
   const [playerBColor, setPlayerBColor] = useState("#FF0000");
+  const [winScore, setWinScore] = useState(3);
 
   return (
     <Routes>
@@ -18,6 +19,8 @@ const MultiMenu = () => {
             playerBColor={playerBColor}
             setPlayerAColor={setPlayerAColor}
             setPlayerBColor={setPlayerBColor}
+            winScore={winScore}
+            setWinScore={setWinScore}
           />
         }
       />
@@ -27,6 +30,7 @@ const MultiMenu = () => {
           <FootballMulti
             playerAColor={playerAColor}
             playerBColor={playerBColor}
+            winScore={winScore}
           />
         }
       />
