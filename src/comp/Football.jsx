@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Matter from "matter-js";
 import "./Football.css";
+import kickSound from "../sound/knee.wav";
 
 const Football = ({ playerAColor, playerBColor, winScore }) => {
   const [aGoalCounter, setAGoalCounter] = useState(0);
@@ -11,6 +12,12 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
 
   const boxRef = useRef(null);
   const canvasRef = useRef(null);
+
+  const kick = new Audio(kickSound);
+
+  const playSound = () => {
+    kick.play();
+  };
 
   useEffect(() => {
     const Engine = Matter.Engine;
@@ -329,9 +336,9 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
 
     const checkScore = () => {
       if (aGoalCounter >= winScore) {
-        setWinner("Red");
+        setWinner("Player 1");
       } else if (bGoalCounter >= winScore) {
-        setWinner("Blue");
+        setWinner("Player 2");
       } else {
         setWinner("");
       }
@@ -347,6 +354,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
         Engine.clear(engine);
         Render.stop(render);
         Runner.stop(engine);
+        Events.off(engine);
 
         render.canvas = null;
         render.context = null;
@@ -432,6 +440,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
           Math.abs(playerA.position.x - ball.position.x) < 45 &&
           Math.abs(playerA.position.y - ball.position.y) < 45
         ) {
+          playSound();
           Body.applyForce(
             ball,
             {
@@ -441,26 +450,6 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
             {
               x: shootForce * (ball.position.x - playerA.position.x),
               y: shootForce * (ball.position.y - playerA.position.y),
-            }
-          );
-        }
-      },
-      KeyP: () => {
-        if (
-          Math.abs(playerB.position.x - ball.position.x) <
-            ballDiameter + playerDiameter + 10 &&
-          Math.abs(playerB.position.y - ball.position.y) <
-            ballDiameter + playerDiameter + 10
-        ) {
-          Body.applyForce(
-            ball,
-            {
-              x: ball.position.x,
-              y: ball.position.y,
-            },
-            {
-              x: shootForce * (ball.position.x - playerB.position.x),
-              y: shootForce * (ball.position.y - playerB.position.y),
             }
           );
         }
@@ -495,6 +484,8 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
           ballDiameter + playerDiameter + 10
       ) {
         if (ball.position.x < playerB.position.x) {
+          playSound();
+
           Body.applyForce(
             ball,
             {
@@ -506,7 +497,6 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
               y: shootForce * (ball.position.y - playerB.position.y),
             }
           );
-        } else {
         }
       }
 
@@ -607,7 +597,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
   };
 
   let resultMessage;
-  if (winner === "Blue") {
+  if (winner === "Player 1") {
     resultMessage = "You won!";
   } else {
     resultMessage = "You lose!";

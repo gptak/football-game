@@ -23,7 +23,8 @@ const SinglePanel = ({
     const score = e.target.value;
     setWinScore(score);
   };
-
+  
+ 
   return (
     <div className="football">
       <header className="title">
