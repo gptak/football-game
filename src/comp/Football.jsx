@@ -36,13 +36,17 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
     const goalHeight = height / 4;
     const ballDiameter = 12;
     const playerDiameter = 20;
-    let startPosA;
-    let startPosB;
+    let startPosAX;
+    let startPosAY;
+    let startPosBX;
+    let startPosBY;
 
-    aWon ? (startPosA = 200) : (startPosA = width / 2 - 100);
-    aWon ? (startPosB = width / 2 + 100) : (startPosB = width - 200);
+    aWon ? (startPosAX = 300) : (startPosAX = width / 2 - 30);
+    aWon ? (startPosAY = height / 2) : (startPosAY = height / 2 - 30);
+    aWon ? (startPosBX = width / 2 + 30) : (startPosBX = width - 400);
+    aWon ? (startPosBY = height / 2 + 30) : (startPosBY = height / 2);
 
-    const playerA = Bodies.circle(startPosA, height / 2, playerDiameter, {
+    const playerA = Bodies.circle(startPosAX, startPosAY, playerDiameter, {
       restitution: 0,
       render: {
         fillStyle: playerAColor,
@@ -52,7 +56,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
     });
     Body.setMass(playerA, 2.5);
 
-    const playerB = Bodies.circle(startPosB, height / 2, playerDiameter, {
+    const playerB = Bodies.circle(startPosBX, startPosBY, playerDiameter, {
       restitution: 0,
       render: {
         fillStyle: playerBColor,
@@ -529,12 +533,24 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
               y: moveForce * Math.sign(ball.position.y - playerB.position.y),
             }
           );
-        } else {
+        } else if (ball.position.y < 0.1 * height) {
           Body.applyForce(
             playerB,
             {
-              x: playerB.position.x + 1,
-              y: playerB.position.y,
+              x: playerB.position.x,
+              y: playerB.position.y + 10,
+            },
+            {
+              x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+              y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+            }
+          );
+        } else if (ball.position.y > 0.9 * height) {
+          Body.applyForce(
+            playerB,
+            {
+              x: playerB.position.x,
+              y: playerB.position.y - 10,
             },
             {
               x: moveForce * Math.sign(ball.position.x - playerB.position.x),
@@ -547,7 +563,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
           Body.applyForce(
             playerB,
             {
-              x: playerB.position.x,
+              x: playerB.position.x + 10,
               y: playerB.position.y - 10,
             },
             {
@@ -559,7 +575,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
           Body.applyForce(
             playerB,
             {
-              x: playerB.position.x,
+              x: playerB.position.x + 10,
               y: playerB.position.y + 10,
             },
             {
