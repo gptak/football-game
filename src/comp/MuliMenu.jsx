@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import FootballMulti from "./FootballMulti";
 import MultiPanel from "./MultiPanel";
-import "./Football.css";
+import "../styles/Football.css";
 
 const MultiMenu = () => {
   const [playerAColor, setPlayerAColor] = useState("#0000FF");

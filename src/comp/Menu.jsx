@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./Football.css";
+import "../styles/Football.css";
 
 const Menu = () => {
  

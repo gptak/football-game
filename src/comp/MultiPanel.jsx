@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "./Football.css";
+import "../styles/Football.css";
 
 const MultiPanel = ({
   setPlayerAColor,
@@ -31,6 +31,7 @@ const MultiPanel = ({
         <h2>Two Players</h2>
       </header>
       <div className="options">
+        <h2 className="options_title">Options</h2>
         <div className="option">
           <label htmlFor="playerAColor">Your color:</label>
           <input
@@ -62,12 +63,25 @@ const MultiPanel = ({
           />
         </div>
       </div>
+      <div className="control">
+        <h2 className="options_title">Control</h2>
+        <div className="control_container">
+          <div className="control_container_box">
+            <h3>Player 1</h3>
+            <p>Use WSAD to move. Q to kick the ball.</p>
+          </div>
+          <div className="control_container_box">
+            <h3>Player 2</h3>
+            <p>Use Arrows to move. P to kick the ball.</p>
+          </div>
+        </div>
+      </div>
       <nav className="nav">
         <Link className="button" to="./game">
           Play
         </Link>
-        <Link className="button" to="/">
-          Back to menu
+        <Link className="button small_button" to="/">
+          Back to main menu
         </Link>
       </nav>
     </div>

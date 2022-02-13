@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import SinglePanel from "./SinglePanel";
 import Football from "./Football";
-import "./Football.css";
+import "../styles/Football.css";
 
 const SingleMenu = () => {
   const [playerAColor, setPlayerAColor] = useState("#0000FF");

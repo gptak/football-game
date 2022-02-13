@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Matter from "matter-js";
-import "./Football.css";
 import kickSound from "../sound/knee.wav";
+import "../styles/Football.css";
 
 const Football = ({ playerAColor, playerBColor, winScore }) => {
   const [aGoalCounter, setAGoalCounter] = useState(0);
@@ -640,7 +640,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
           <button className="button" onClick={newGameHandler}>
             Play again
           </button>
-          <Link className="button" to="/single">
+          <Link className="button small_button" to="/single">
             Back to menu
           </Link>
         </div>

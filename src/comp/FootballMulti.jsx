@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Matter from "matter-js";
-import "./Football.css";
+import "../styles/Football.css";
 
 const FootballMulti = ({ playerAColor, playerBColor, winScore }) => {
   const [aGoalCounter, setAGoalCounter] = useState(0);
@@ -561,7 +561,7 @@ const FootballMulti = ({ playerAColor, playerBColor, winScore }) => {
           <button className="button" onClick={newGameHandler}>
             Play again
           </button>
-          <Link className="button" to="/multi">
+          <Link className="button small_button" to="/multi">
             Back to menu
           </Link>
         </div>
