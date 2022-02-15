@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Matter from "matter-js";
 import kickSound from "../sound/knee.wav";
+import cheerSound from "../sound/cheering.mp3";
 import "../styles/Football.css";
 
 const Football = ({ playerAColor, playerBColor, winScore }) => {
@@ -14,10 +15,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
   const canvasRef = useRef(null);
 
   const kick = new Audio(kickSound);
-
-  const playSound = () => {
-    kick.play();
-  };
+  const cheer = new Audio(cheerSound);
 
   useEffect(() => {
     const Engine = Matter.Engine;
@@ -370,9 +368,12 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
 
         if (pair.bodyA === ball && pair.bodyB === playerAGoal) {
           goalSignA.render.fillStyle = "yellow";
+          cheer.play();
+
           setTimeout(() => {
             Body.set(ball, "isStatic", true);
           }, 50);
+
           setTimeout(() => {
             reset();
             setAWon(false);
@@ -380,9 +381,12 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
           }, 1000);
         } else if (pair.bodyA === ball && pair.bodyB === playerBGoal) {
           goalSignB.render.fillStyle = "yellow";
+          cheer.play();
+
           setTimeout(() => {
             Body.set(ball, "isStatic", true);
           }, 50);
+
           setTimeout(() => {
             reset();
             setAWon(true);
@@ -444,7 +448,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
           Math.abs(playerA.position.x - ball.position.x) < 45 &&
           Math.abs(playerA.position.y - ball.position.y) < 45
         ) {
-          playSound();
+          kick.play();
           Body.applyForce(
             ball,
             {
@@ -488,7 +492,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
           ballDiameter + playerDiameter + 10
       ) {
         if (ball.position.x < playerB.position.x) {
-          playSound();
+          kick.play();
 
           Body.applyForce(
             ball,
@@ -637,7 +641,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aGoalCounter, bGoalCounter]);
 
-  // new hame handler
+  // new game handler
 
   const newGameHandler = () => {
     setAGoalCounter(0);
