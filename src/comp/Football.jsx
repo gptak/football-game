@@ -340,9 +340,9 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
 
     const checkScore = () => {
       if (aGoalCounter >= winScore) {
-        setWinner("Player 1");
-      } else if (bGoalCounter >= winScore) {
         setWinner("Player 2");
+      } else if (bGoalCounter >= winScore) {
+        setWinner("Player 1");
       } else {
         setWinner("");
       }
