@@ -491,7 +491,7 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
         Math.abs(playerB.position.y - ball.position.y) <
           ballDiameter + playerDiameter + 10
       ) {
-        if (ball.position.x < playerB.position.x-5) {
+        if (ball.position.x < playerB.position.x - 5) {
           kick.play();
 
           Body.applyForce(
@@ -512,12 +512,12 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
 
       // defence
       if (ball.position.x > width / 2) {
-        if (playerB.position.y >= height/2) {
+        if (playerB.position.y >= height / 2) {
           Body.applyForce(
             playerB,
             {
-              x: playerB.position.x+15,
-              y: playerB.position.y-20,
+              x: playerB.position.x + 15,
+              y: playerB.position.y - 20,
             },
             {
               x: moveForce * Math.sign(ball.position.x - playerB.position.x),
@@ -528,8 +528,8 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
           Body.applyForce(
             playerB,
             {
-              x: playerB.position.x+15,
-              y: playerB.position.y+20,
+              x: playerB.position.x + 15,
+              y: playerB.position.y + 20,
             },
             {
               x: moveForce * Math.sign(ball.position.x - playerB.position.x),
@@ -537,18 +537,37 @@ const Football = ({ playerAColor, playerBColor, winScore }) => {
             }
           );
         }
-      } else // attack
-      { Body.applyForce(
-        playerB,
-        {
-          x: playerB.position.x,
-          y: playerB.position.y,
-        },
-        {
-          x: moveForce * Math.sign(ball.position.x - playerB.position.x),
-          y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+      } // attack
+      else {
+        if (
+          playerB.position.y > 0.85 * height ||
+          playerB.position.y < 0.15 * height
+        ) {
+          Body.applyForce(
+            playerB,
+            {
+              x: playerB.position.x + 30,
+              y: playerB.position.y - 20 * Math.sign(playerB.position.y - height/2),
+            },
+            {
+              x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+              y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+            }
+          );
+        } else {
+          Body.applyForce(
+            playerB,
+            {
+              x: playerB.position.x,
+              y: playerB.position.y,
+            },
+            {
+              x: moveForce * Math.sign(ball.position.x - playerB.position.x),
+              y: moveForce * Math.sign(ball.position.y - playerB.position.y),
+            }
+          );
         }
-      );}
+      }
     });
 
     checkScore();
