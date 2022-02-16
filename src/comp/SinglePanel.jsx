@@ -10,18 +10,15 @@ const SinglePanel = ({
   setWinScore,
 }) => {
   const colorAChangeHandler = (e) => {
-    const colorA = e.target.value;
-    setPlayerAColor(colorA);
+    setPlayerAColor(e.target.value);
   };
 
   const colorBChangeHandler = (e) => {
-    const colorB = e.target.value;
-    setPlayerBColor(colorB);
+    setPlayerBColor(e.target.value);
   };
 
   const scoreHandler = (e) => {
-    const score = e.target.value;
-    setWinScore(score);
+    setWinScore(e.target.value);
   };
 
   return (
@@ -65,7 +62,7 @@ const SinglePanel = ({
       </div>
       <div className="control">
         <h2 className="options_title">Control</h2>
-        <p>Use WSAD to move. Q key to kick the ball.</p>
+        <p>Move: WASD Kick: Q</p>
       </div>
 
       <nav className="nav">

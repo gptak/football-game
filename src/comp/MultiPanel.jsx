@@ -10,18 +10,15 @@ const MultiPanel = ({
   setWinScore,
 }) => {
   const colorAChangeHandler = (e) => {
-    const colorA = e.target.value;
-    setPlayerAColor(colorA);
+    setPlayerAColor(e.target.value);
   };
 
   const colorBChangeHandler = (e) => {
-    const colorB = e.target.value;
-    setPlayerBColor(colorB);
+    setPlayerBColor(e.target.value);
   };
 
   const scoreHandler = (e) => {
-    const score = e.target.value;
-    setWinScore(score);
+    setWinScore(e.target.value);
   };
 
   return (
@@ -68,11 +65,11 @@ const MultiPanel = ({
         <div className="control_container">
           <div className="control_container_box">
             <h3>Player 1</h3>
-            <p>Use WSAD to move. Q to kick the ball.</p>
+            <p>Move: WASD  Kick: Q</p>
           </div>
           <div className="control_container_box">
             <h3>Player 2</h3>
-            <p>Use Arrows to move. P to kick the ball.</p>
+            <p>Move: Arrows  Kick: P</p>
           </div>
         </div>
       </div>
